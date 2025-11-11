@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NayNay Chat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="chat-container">
+        <!-- Боковая панель с контактами -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>Чаты</h2>
+                <div class="header-actions">
+                    <button id="addFriendBtn" class="action-btn" title="Добавить друга">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                        </svg>
+                    </button>
+                    <button class="new-chat-btn">+</button>
+                </div>
+            </div>
+            
+            <!-- Вкладки -->
+            <div class="tabs">
+                <button class="tab-button active" data-tab="chats">Чаты</button>
+                <button class="tab-button" data-tab="friends">Друзья</button>
+                <button class="tab-button" data-tab="requests">Запросы</button>
+            </div>
+
+            <div class="search-container">
+                <input type="text" placeholder="Поиск..." class="search-input">
+            </div>
+
+            <!-- Список чатов -->
+            <div class="tab-content active" id="chatsTab">
+                <div class="contacts-list" id="chatsList">
+                    <!-- Чаты будут добавляться динамически -->
+                </div>
+            </div>
+
+            <!-- Список друзей -->
+            <div class="tab-content" id="friendsTab">
+                <div class="contacts-list" id="friendsList">
+                    <!-- Друзья будут добавляться динамически -->
+                </div>
+            </div>
+
+            <!-- Запросы в друзья -->
+            <div class="tab-content" id="requestsTab">
+                <div class="contacts-list" id="requestsList">
+                    <!-- Запросы будут добавляться динамически -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Основная область чата -->
+        <div class="chat-area">
+            <div class="chat-header">
+                <div class="chat-partner-info">
+                    <div class="partner-avatar" id="currentChatAvatar">👥</div>
+                    <div class="partner-details">
+                        <div class="partner-name" id="currentChatName">Выберите чат</div>
+                        <div class="partner-status" id="currentChatStatus">Начните общение</div>
+                    </div>
+                </div>
+                <div class="chat-actions">
+                    <button class="chat-action-btn" title="Информация о чате">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="messages-container" id="messagesContainer">
+                <div class="welcome-message">
+                    <div class="welcome-icon">💬</div>
+                    <h3>Добро пожаловать в NayNay Chat!</h3>
+                    <p>Выберите чат из списка слева чтобы начать общение</p>
+                </div>
+            </div>
+
+            <!-- Панель эмодзи -->
+            <div id="emojiPicker" class="emoji-picker">
+                <div class="emoji-category">
+                    <div class="emoji-category-title">Часто используемые</div>
+                    <div class="emoji-grid">
+                        <span class="emoji">😀</span>
+                        <span class="emoji">😂</span>
+                        <span class="emoji">❤️</span>
+                        <span class="emoji">👍</span>
+                        <span class="emoji">🎉</span>
+                        <span class="emoji">🔥</span>
+                        <span class="emoji">😊</span>
+                        <span class="emoji">🤔</span>
+                    </div>
+                </div>
+                <div class="emoji-category">
+                    <div class="emoji-category-title">Смайлики</div>
+                    <div class="emoji-grid">
+                        <span class="emoji">😀</span>
+                        <span class="emoji">😃</span>
+                        <span class="emoji">😄</span>
+                        <span class="emoji">😁</span>
+                        <span class="emoji">😆</span>
+                        <span class="emoji">😅</span>
+                        <span class="emoji">😂</span>
+                        <span class="emoji">🤣</span>
+                        <span class="emoji">😊</span>
+                        <span class="emoji">😇</span>
+                        <span class="emoji">🙂</span>
+                        <span class="emoji">🙃</span>
+                        <span class="emoji">😉</span>
+                        <span class="emoji">😌</span>
+                        <span class="emoji">😍</span>
+                        <span class="emoji">🥰</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-container">
+                <div class="input-actions">
+                    <button id="fileButton" class="action-btn" title="Прикрепить файл">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5a2.5 2.5 0 0 1 5 0v10.5c0 .55-.45 1-1 1s-1-.45-1-1V6H10v9.5a2.5 2.5 0 0 0 5 0V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z"/>
+                        </svg>
+                    </button>
+                    <button id="emojiButton" class="action-btn" title="Смайлики">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" placeholder="Введите сообщение..." id="messageInput" disabled>
+                    <button id="sendButton" disabled>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                        </svg>
+                    </button>
+                </div>
+                <button id="voiceButton" class="voice-btn" title="Голосовое сообщение" disabled>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
+                        <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Индикатор записи голоса -->
+            <div id="voiceRecordIndicator" class="voice-record-indicator">
+                <div class="voice-record-content">
+                    <div class="pulse"></div>
+                    <div class="text">Запись... Нажмите чтобы остановить</div>
+                    <div class="timer">0:00</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для добавления друга -->
+    <div id="addFriendModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Добавить друга</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="friendUsername">Имя пользователя:</label>
+                    <input type="text" id="friendUsername" placeholder="Введите username друга">
+                </div>
+                <div class="form-group">
+                    <label for="friendMessage">Сообщение (необязательно):</label>
+                    <textarea id="friendMessage" placeholder="Напишите приветственное сообщение"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="sendFriendRequestBtn" class="send-files-btn">Отправить запрос</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно для файлов -->
+    <div id="fileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Прикрепленные файлы</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="filePreview" class="file-preview"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="sendFilesButton" class="send-files-btn">Отправить файлы</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно информации о пользователе -->
+    <div id="userInfoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Информация о пользователе</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body user-info">
+                <div class="user-avatar-large">👤</div>
+                <div class="user-details">
+                    <h4 id="infoUserName">Имя пользователя</h4>
+                    <p id="infoUserStatus">Статус</p>
+                    <p id="infoUserLastSeen">Был(а) в сети</p>
+                </div>
+                <div class="user-actions">
+                    <button class="user-action-btn primary" id="writeMessageBtn">Написать сообщение</button>
+                    <button class="user-action-btn" id="removeFriendBtn">Удалить из друзей</button>
+                    <button class="user-action-btn danger" id="blockUserBtn">Заблокировать</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
